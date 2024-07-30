@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
+  color: black;
+} */
+.image-container {
+  background-image: url("/download.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 30%;
+}
