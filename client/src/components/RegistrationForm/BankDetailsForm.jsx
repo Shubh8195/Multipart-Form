@@ -4,6 +4,8 @@ import Button from "../Button";
 import { createFormData } from "../../helper/createFormData";
 import { BankDetailsValidationSchema } from "./validator";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import Loader from "../Loader";
 
 const ApiEndpoint =
   import.meta.env.VITE_API_URL ?? "http://localhost:3000/upload";
@@ -14,6 +16,7 @@ const BankDetailsForm = ({
   setFormData,
   handleReset,
 }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formik = useFormik({
     initialValues: {
       bankDetailsData: {
@@ -30,7 +33,7 @@ const BankDetailsForm = ({
         ...prevData,
         ...values,
       }));
-
+      setIsSubmitting(true);
       submitForm();
     },
   });
@@ -45,99 +48,104 @@ const BankDetailsForm = ({
     if (res.ok) {
       const data = await res.json();
       handleReset();
+      setIsSubmitting(false);
       toast.success(data.message);
     } else {
+      setIsSubmitting(false);
       toast.error("Something went wrong");
     }
   }
 
   return (
-    <form onSubmit={formik.handleSubmit} className="form">
-      <div className="grid grid-flow-col grid-cols-12 gap-3 ">
-        <div className="col-span-9 grid gap-3">
-          <div className="grid grid-cols-12 gap-4 items-start">
-            <TextField
-              label={"Account Holder Name"}
-              type="text"
-              name={`bankDetailsData.accountHolderName`}
-              onChange={formik.handleChange}
-              values={formik.values.bankDetailsData.accountHolderName}
-              colSize="col-span-4"
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.bankDetailsData?.accountHolderName &&
-                formik.errors.bankDetailsData?.accountHolderName
-              }
-              errorMsg={formik.errors.bankDetailsData?.accountHolderName}
-            />
-            <TextField
-              label={"Bank Account Number"}
-              type="text"
-              name={`bankDetailsData.bankAccountNo`}
-              onChange={formik.handleChange}
-              values={formik.values.bankDetailsData.bankAccountNo}
-              colSize="col-span-4"
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.bankDetailsData?.bankAccountNo &&
-                formik.errors.bankDetailsData?.bankAccountNo
-              }
-              errorMsg={formik.errors.bankDetailsData?.bankAccountNo}
-            />
-          </div>
-          <div className="grid grid-cols-12 gap-4 items-start">
-            <TextField
-              label={"Bank Name"}
-              type="text"
-              name={`bankDetailsData.bankName`}
-              onChange={formik.handleChange}
-              values={formik.values.bankDetailsData.bankName}
-              colSize="col-span-4"
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.bankDetailsData?.bankName &&
-                formik.errors.bankDetailsData?.bankName
-              }
-              errorMsg={formik.errors.bankDetailsData?.bankName}
-            />
-            <TextField
-              label={"IFSC Code"}
-              type="text"
-              name={`bankDetailsData.ifscCode`}
-              onChange={formik.handleChange}
-              values={formik.values.bankDetailsData.ifscCode}
-              colSize="col-span-4"
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.bankDetailsData?.ifscCode &&
-                formik.errors.bankDetailsData?.ifscCode
-              }
-              errorMsg={formik.errors.bankDetailsData?.ifscCode}
-            />
-          </div>
-          <div className="grid grid-cols-12 gap-4 items-start">
-            <TextField
-              label={"Branch Name"}
-              type="text"
-              name={`bankDetailsData.branchName`}
-              onChange={formik.handleChange}
-              values={formik.values.bankDetailsData.branchName}
-              colSize="col-span-4"
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.bankDetailsData?.branchName &&
-                formik.errors.bankDetailsData?.branchName
-              }
-              errorMsg={formik.errors.bankDetailsData?.branchName}
-            />
+    <>
+      {isSubmitting && <Loader />}
+      <form onSubmit={formik.handleSubmit} className="form">
+        <div className="grid grid-flow-col grid-cols-12 gap-3 ">
+          <div className="col-span-9 grid gap-3">
+            <div className="grid grid-cols-12 gap-4 items-start">
+              <TextField
+                label={"Account Holder Name"}
+                type="text"
+                name={`bankDetailsData.accountHolderName`}
+                onChange={formik.handleChange}
+                values={formik.values.bankDetailsData.accountHolderName}
+                colSize="col-span-4"
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.bankDetailsData?.accountHolderName &&
+                  formik.errors.bankDetailsData?.accountHolderName
+                }
+                errorMsg={formik.errors.bankDetailsData?.accountHolderName}
+              />
+              <TextField
+                label={"Bank Account Number"}
+                type="text"
+                name={`bankDetailsData.bankAccountNo`}
+                onChange={formik.handleChange}
+                values={formik.values.bankDetailsData.bankAccountNo}
+                colSize="col-span-4"
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.bankDetailsData?.bankAccountNo &&
+                  formik.errors.bankDetailsData?.bankAccountNo
+                }
+                errorMsg={formik.errors.bankDetailsData?.bankAccountNo}
+              />
+            </div>
+            <div className="grid grid-cols-12 gap-4 items-start">
+              <TextField
+                label={"Bank Name"}
+                type="text"
+                name={`bankDetailsData.bankName`}
+                onChange={formik.handleChange}
+                values={formik.values.bankDetailsData.bankName}
+                colSize="col-span-4"
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.bankDetailsData?.bankName &&
+                  formik.errors.bankDetailsData?.bankName
+                }
+                errorMsg={formik.errors.bankDetailsData?.bankName}
+              />
+              <TextField
+                label={"IFSC Code"}
+                type="text"
+                name={`bankDetailsData.ifscCode`}
+                onChange={formik.handleChange}
+                values={formik.values.bankDetailsData.ifscCode}
+                colSize="col-span-4"
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.bankDetailsData?.ifscCode &&
+                  formik.errors.bankDetailsData?.ifscCode
+                }
+                errorMsg={formik.errors.bankDetailsData?.ifscCode}
+              />
+            </div>
+            <div className="grid grid-cols-12 gap-4 items-start">
+              <TextField
+                label={"Branch Name"}
+                type="text"
+                name={`bankDetailsData.branchName`}
+                onChange={formik.handleChange}
+                values={formik.values.bankDetailsData.branchName}
+                colSize="col-span-4"
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.bankDetailsData?.branchName &&
+                  formik.errors.bankDetailsData?.branchName
+                }
+                errorMsg={formik.errors.bankDetailsData?.branchName}
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="mt-5 flex justify-center gap-12">
-        <Button type={"button"} title={"Previous"} onClick={handlePrev} />
-        <Button type={"submit"} title={"Submit"} />
-      </div>
-    </form>
+        <div className="mt-5 flex justify-center gap-12">
+          <Button type={"button"} title={"Previous"} onClick={handlePrev} />
+          <Button type={"submit"} title={"Submit"} />
+        </div>
+      </form>
+    </>
   );
 };
 

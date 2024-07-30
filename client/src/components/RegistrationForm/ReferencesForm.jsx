@@ -36,7 +36,6 @@ const ReferencesForm = ({ handleNext, handlePrev, formData, setFormData }) => {
       ],
     },
     onSubmit: (values) => {
-      console.log(values);
       setFormData((prevData) => ({
         ...prevData,
         ...values,

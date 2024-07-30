@@ -1,6 +1,7 @@
 import React from "react";
 import Registration from "./module/Registration";
 import { Toaster } from "react-hot-toast";
+import Loader from "./components/Loader";
 
 const App = () => {
   return (
